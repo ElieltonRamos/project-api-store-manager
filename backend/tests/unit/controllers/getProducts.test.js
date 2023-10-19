@@ -6,7 +6,7 @@ const { expect } = chai;
 chai.use(sinonChai);
 const services = require('../../../src/services');
 const controllers = require('../../../src/controllers');
-const mockDBProducts = require('../../mocks/mockDataBase');
+const { mockDBProducts } = require('../../mocks/mockDataBase');
 
 describe('Realizando testes unitários para a camada controller', function () {
   afterEach(function () {

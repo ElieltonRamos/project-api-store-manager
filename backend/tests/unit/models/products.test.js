@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const models = require('../../../src/models');
 const connection = require('../../../src/models/connection');
-const mockDBProducts = require('../../mocks/mockDataBase');
+const { mockDBProducts } = require('../../mocks/mockDataBase');
 
 describe('Realiazando testes unitários para o model de produtos', function () {
   afterEach(function () {

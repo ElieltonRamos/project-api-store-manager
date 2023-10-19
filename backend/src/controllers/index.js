@@ -1,4 +1,4 @@
-const getAllProducts = require('./getProducts');
+const getAllProducts = require('./getAllProducts');
 const getProductId = require('./getProductId');
 
 module.exports = {

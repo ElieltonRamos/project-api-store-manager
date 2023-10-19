@@ -5,4 +5,15 @@ const findAllProducts = async () => {
   return allProducts;
 };
 
-module.exports = findAllProducts;
+const findProductById = async (id) => {
+  const [product] = await connection.execute(
+    'SELECT * FROM products WHERE id = ?',
+    [id],
+  );
+  return product;
+};
+
+module.exports = {
+  findAllProducts,
+  findProductById,
+};

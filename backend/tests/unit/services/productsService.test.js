@@ -13,6 +13,7 @@ describe('Realizando testes unitários para a camada service', function () {
 
     const { status, data } = await services.listAllProducts();
     expect(data).to.be.an('array');
+    expect(data).to.be.deep.equal(mockDBProducts);
     expect(status).to.be.equal('OK');
   });
 

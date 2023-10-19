@@ -1,9 +1,9 @@
 const mapStatusHTTP = require('../utils/mapStatusHTTP');
-const { listAllProducts } = require('../services');
+const services = require('../services');
 
 const getAllProducts = async (_req, res) => {
   try {
-    const { status, data } = await listAllProducts();
+    const { status, data } = await services.listAllProducts();
     return res.status(mapStatusHTTP(status)).json(data);
   } catch (error) {
     console.log(error);

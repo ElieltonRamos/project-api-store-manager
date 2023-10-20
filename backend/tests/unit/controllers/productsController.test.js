@@ -8,7 +8,7 @@ const services = require('../../../src/services');
 const controllers = require('../../../src/controllers');
 const { mockDBProducts } = require('../../mocks/mockDataBase');
 
-describe('Realizando testes unitários para a camada controller', function () {
+describe('Testes unitários - Controller - Products', function () {
   afterEach(function () {
     sinon.restore();
   });
@@ -19,8 +19,8 @@ describe('Realizando testes unitários para a camada controller', function () {
 
     const req = {};
     const res = {
-      status: sinon.stub(),
-      json: sinon.stub(),
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub().returnsThis(),
     };
 
     await controllers.getAllProducts(req, res);
@@ -34,8 +34,8 @@ describe('Realizando testes unitários para a camada controller', function () {
 
     const req = {};
     const res = {
-      status: sinon.stub(),
-      json: sinon.stub(),
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub().returnsThis(),
     };
 
     await controllers.getAllProducts(req, res);
@@ -49,13 +49,13 @@ describe('Realizando testes unitários para a camada controller', function () {
 
     const req = { params: { id: 1 } };
     const res = {
-      status: sinon.stub(),
-      json: sinon.stub(),
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub().returnsThis(),
     };
 
     await controllers.getProductId(req, res);
     expect(res.status).to.have.been.calledWith(200);
-    expect(res.json).to.have.been.calledWith(mockDBProducts[0]);
+    expect(res.json).to.have.been.calledWith([mockDBProducts[0]]);
   });
 
   it('getProductId deve retornar um message e o status da requisição em caso de produto nao encontrado', async function () {
@@ -64,8 +64,8 @@ describe('Realizando testes unitários para a camada controller', function () {
 
     const req = { params: { id: 9999 } };
     const res = {
-      status: sinon.stub(),
-      json: sinon.stub(),
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub().returnsThis(),
     };
 
     await controllers.getProductId(req, res);

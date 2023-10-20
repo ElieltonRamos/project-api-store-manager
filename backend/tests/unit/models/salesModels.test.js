@@ -4,12 +4,12 @@ const models = require('../../../src/models');
 const connection = require('../../../src/models/connection');
 const { mockDBSales } = require('../../mocks/mockDataBase');
 
-describe('Testes unitarios camada model - Listagem de vendas', function () {
+describe('Testes unitarios - Models - Listagem de vendas', function () {
   afterEach(function () {
     sinon.restore();
   });
 
-  it.only('Verifica se a funcao findAllSales retorna todos os produtos do Database', async function () {
+  it('Verifica se a funcao findAllSales retorna todos os produtos do Database', async function () {
     const responseSQL = [];
     const mockDB = [mockDBSales, responseSQL];
 
@@ -21,7 +21,7 @@ describe('Testes unitarios camada model - Listagem de vendas', function () {
     expect(response).to.be.an('array');
   });
 
-  it.only('Verifica se a funcao findSalesFromId retorna o produto do Database', async function () {
+  it('Verifica se a funcao findSalesFromId retorna o produto do Database', async function () {
     const responseSQL = [];
     const SalesById = mockDBSales[0];
     const mockDB = [SalesById, responseSQL];

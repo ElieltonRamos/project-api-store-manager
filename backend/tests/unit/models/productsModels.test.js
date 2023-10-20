@@ -4,7 +4,7 @@ const models = require('../../../src/models');
 const connection = require('../../../src/models/connection');
 const { mockDBProducts } = require('../../mocks/mockDataBase');
 
-describe('Realiazando testes unitários para o model de produtos', function () {
+describe('Testes unitários - Models - Produtos', function () {
   afterEach(function () {
     sinon.restore();
   });

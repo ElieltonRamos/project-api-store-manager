@@ -26,10 +26,11 @@ describe('Testes unitários - Services - Listagem de Vendas', function () {
   });
 
   it('listSalesFromId deve retornar todas as vendas pelo ID e o status da requisição em caso de sucesso', async function () {
-    sinon.stub(models, 'findProductById').resolves([mockDBSales[0]]);
+    sinon.stub(models, 'findSalesById').resolves([mockDBSales[0]]);
 
-    const { status, data } = await services.listProductId(1);
-    expect(data).to.be.an('object');
+    const { status, data } = await services.listSalesFromId(1);
+
+    expect(data).to.be.deep.equal([mockDBSales[0]]);
     expect(status).to.be.equal('OK');
   });
 

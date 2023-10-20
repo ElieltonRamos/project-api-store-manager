@@ -72,4 +72,49 @@ describe('Testes unitários - Controller - Products', function () {
     expect(res.status).to.have.been.calledWith(404);
     expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
   });
+
+  it('postProduct deve retornar um produto e o status da requisição em caso de sucesso', async function () {
+    const mockResponse = { status: 'CREATED', data: mockDBProducts[0] };
+    sinon.stub(services, 'registerProduct').resolves(mockResponse);
+
+    const req = { body: mockDBProducts[0].name };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub().returnsThis(),
+    };
+
+    await controllers.postProducts(req, res);
+    expect(res.status).to.have.been.calledWith(201);
+    expect(res.json).to.have.been.calledWith(mockDBProducts[0]);
+  });
+
+  it('postProduct deve retornar um message e o status da requisição em caso de produto ja existente', async function () {
+    const mockResponse = { status: 'CONFLICT', data: { message: 'Product already exists' } };
+    sinon.stub(services, 'registerProduct').resolves(mockResponse);
+
+    const req = { body: 'teste - produto ja cadastrado' };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub().returnsThis(),
+    };
+
+    await controllers.postProducts(req, res);
+    expect(res.status).to.have.been.calledWith(409);
+    expect(res.json).to.have.been.calledWith({ message: 'Product already exists' });
+  });
+
+  it('postProduct deve retornar um message e o status da requisição em caso de erro', async function () {
+    const mockResponse = { status: 'ERROR', data: { message: 'Internal Error' } };
+    sinon.stub(services, 'registerProduct').resolves(mockResponse);
+
+    const req = { body: 'teste - erro no DB' };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub().returnsThis(),
+    };
+
+    await controllers.postProducts(req, res);
+    expect(res.status).to.have.been.calledWith(500);
+    expect(res.json).to.have.been.calledWith({ message: 'Internal Error' });
+  });
 });

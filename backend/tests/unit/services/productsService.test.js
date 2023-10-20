@@ -40,4 +40,32 @@ describe('Testes unitários - Services - Produtos', function () {
     expect(data).to.deep.equal({ message: 'Product not found' });
     expect(status).to.be.equal('NOT_FOUND');
   });
+
+  it('registerProduct deve retornar um produto e o status da requisição em caso de sucesso', async function () {
+    sinon.stub(models, 'findAllProducts').resolves(mockDBProducts);
+    sinon.stub(models, 'insertNewProduct').resolves(1);
+
+    const { status, data } = await services.registerProduct('produto teste');
+    expect(data).to.be.an('object');
+    expect(data).to.be.deep.equal({ id: 1, name: 'produto teste' });
+    expect(status).to.be.equal('CREATED');
+  });
+
+  it('registerProduct deve retornar um message e o status da requisição em caso de falha', async function () {
+    sinon.stub(models, 'findAllProducts').resolves(mockDBProducts);
+    sinon.stub(models, 'insertNewProduct').resolves(null);
+
+    const { status, data } = await services.registerProduct('Martelo de Thor');
+    expect(data).to.deep.equal({ message: 'product already registered' });
+    expect(status).to.be.equal('CONFLICT');
+  });
+
+  it('registerProduct deve retornar um message e o status da requisição em caso de falha do banco de dados', async function () {
+    sinon.stub(models, 'findAllProducts').resolves(mockDBProducts);
+    sinon.stub(models, 'insertNewProduct').resolves(undefined);
+
+    const { status, data } = await services.registerProduct('teste');
+    expect(data).to.deep.equal({ message: 'Unable to register the product' });
+    expect(status).to.be.equal('ERROR');
+  });
 });

@@ -31,4 +31,13 @@ describe('Testes unitários - Models - Produtos', function () {
     const response = await models.findProductById(1);
     expect(response).to.be.equal(productById);
   });
+
+  it('Verifica se a funcao insertNewProduct insere um novo produto no Database', async function () {
+    const mockDB = [{ insertId: 1 }, []];
+
+    sinon.stub(connection, 'execute').resolves(mockDB);
+
+    const response = await models.insertNewProduct('produto teste');
+    expect(response).to.be.equal(1);
+  });
 });

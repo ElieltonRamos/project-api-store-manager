@@ -1,4 +1,4 @@
-const { findAllProducts, findProductById } = require('./products');
+const { findAllProducts, findProductById, insertNewProduct } = require('./products');
 const { findAllSales, findSalesById } = require('./sales');
 
 module.exports = {
@@ -6,4 +6,5 @@ module.exports = {
   findProductById,
   findAllSales,
   findSalesById,
+  insertNewProduct,
 };

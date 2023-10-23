@@ -10,4 +10,6 @@ routerProducts.get('/:id', controllers.getProductId);
 
 routerProducts.post('/', middlewares.validateRegistrationField, controllers.postProducts);
 
+routerProducts.delete('/:id', controllers.deleteProduct);
+
 module.exports = routerProducts;

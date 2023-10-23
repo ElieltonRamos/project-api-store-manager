@@ -21,8 +21,14 @@ const insertNewProduct = async (name) => {
   return productId.insertId;
 };
 
+const deleteProduct = async (id) => {
+  const responseDB = await connection.execute('DELETE FROM products WHERE id = ?', [id]);
+  return responseDB[0].affectedRows;
+};
+
 module.exports = {
   findAllProducts,
   findProductById,
   insertNewProduct,
+  deleteProduct,
 };

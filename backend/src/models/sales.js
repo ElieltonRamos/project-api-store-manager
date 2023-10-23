@@ -29,7 +29,26 @@ FROM sales_products AS t1
   return sale;
 };
 
+const createNewSale = async () => {
+  const [{ insertId }] = await connection.execute('INSERT INTO sales (date) VALUES (NOW())');
+  return insertId;
+};
+
+const insertNewSale = async (data) => {
+  const placeholders = data.map((_) => '(?, ?, ?)').join(', ');
+  const idSale = await createNewSale();
+  const values = data.map(({ productId, quantity }) => [idSale, productId, quantity]).flat();
+  const responseDB = await connection.execute(
+    `INSERT INTO sales_products (sale_id, product_id, quantity) VALUES ${placeholders};`,
+    [...values],
+  );
+  if (responseDB.affectedRows === 0) return { message: 'error' };
+  return { id: idSale, itemsSold: data };
+};
+
 module.exports = {
   findAllSales,
   findSalesById,
+  insertNewSale,
+  createNewSale,
 };

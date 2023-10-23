@@ -3,6 +3,8 @@ const HTTPCodeStatus = {
   CREATED: 201,
   NOT_FOUND: 404,
   CONFLICT: 409,
+  BAD_REQUEST: 400,
+  UNPROCESSABLE_ENTITY: 422,
 };
 
 const mapStatusHTTP = (status) => HTTPCodeStatus[status] || 500;

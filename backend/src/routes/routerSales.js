@@ -7,4 +7,6 @@ routerSales.get('/', controllers.getAllSales);
 
 routerSales.get('/:id', controllers.getSalesFromId);
 
+routerSales.post('/', controllers.postSales);
+
 module.exports = routerSales;

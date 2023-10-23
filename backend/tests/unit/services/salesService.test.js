@@ -4,7 +4,7 @@ const services = require('../../../src/services');
 const models = require('../../../src/models');
 const { mockDBSales } = require('../../mocks/mockDataBase');
 
-describe('Testes unitários - Services - Listagem de Vendas', function () {
+describe('Testes unitários - Services - Vendas', function () {
   afterEach(function () {
     sinon.restore();
   });
@@ -40,5 +40,82 @@ describe('Testes unitários - Services - Listagem de Vendas', function () {
     const { status, data } = await services.listSalesFromId(999);
     expect(data).to.deep.equal({ message: 'Sale not found' });
     expect(status).to.be.equal('NOT_FOUND');
+  });
+
+  it('productExists deve retornar um objeto com status OK caso o produto exista', async function () {
+    sinon.stub(models, 'findProductById').resolves([mockDBSales[0]]);
+
+    const { status } = await services.productExists(1);
+    expect(status).to.be.equal('OK');
+  });
+
+  it('productExists deve retornar um erro caso produto nao exista no DB', async function () {
+    sinon.stub(models, 'findProductById').resolves([]);
+
+    const response = await services.productExists(9999);
+    expect(response).to.be.deep.equal({ status: 'NOT_FOUND', data: { message: 'Product not found' } });
+  });
+
+  it('validationItensSolds deve retornar um array com status OK caso todos os itens sejam válidos', async function () {
+    sinon.stub(models, 'findProductById').resolves([mockDBSales[0]]);
+
+    const itensSold = [{ productId: 1, quantity: 1 }];
+    const response = await services.validationItensSolds(itensSold);
+    expect(response).to.be.deep.equal([{ status: 'OK' }]);
+  });
+
+  it('validationItensSolds deve retornar um array com status BAD_REQUEST caso algum item nao tenha productId', async function () {
+    const itensSold = [{ quantity: 1 }];
+    const response = await services.validationItensSolds(itensSold);
+    expect(response).to.be.deep.equal([{ status: 'BAD_REQUEST', data: { message: '"productId" is required' } }]);
+  });
+
+  it('validationItensSolds deve retornar um array com status BAD_REQUEST caso algum item nao tenha quantity', async function () {
+    const itensSold = [{ productId: 1 }];
+    const response = await services.validationItensSolds(itensSold);
+    expect(response).to.be.deep.equal([{ status: 'BAD_REQUEST', data: { message: '"quantity" is required' } }]);
+  });
+
+  it('validationItensSolds deve retornar um array com status UNPROCESSABLE_ENTITY caso algum item tenha quantity menor ou igual a 0', async function () {
+    const itensSold = [{ productId: 1, quantity: 0 }];
+    const response = await services.validationItensSolds(itensSold);
+    expect(response).to.be.deep.equal([{ status: 'UNPROCESSABLE_ENTITY', data: { message: '"quantity" must be greater than or equal to 1' } }]);
+  });
+
+  it('validationItensSolds deve retornar um array com status NOT_FOUND caso algum item tenha productId que nao exista no DB', async function () {
+    sinon.stub(models, 'findProductById').resolves([]);
+
+    const itensSold = [{ productId: 999, quantity: 1 }];
+    const response = await services.validationItensSolds(itensSold);
+    expect(response).to.be.deep.equal([{ status: 'NOT_FOUND', data: { message: 'Product not found' } }]);
+  });
+
+  it('registerSales deve retornar um objeto com status CREATED e os dados da venda em caso de sucesso', async function () {
+    const mockInsertNewSale = { productId: 1, quantity: 1 };
+    const mockDBProductID = [{ productId: 1, name: 'teste' }];
+    sinon.stub(models, 'findProductById').resolves(mockDBProductID);
+    sinon.stub(models, 'insertNewSale').resolves([mockInsertNewSale]);
+
+    const itensSold = [{ productId: 1, quantity: 1 }];
+    const response = await services.registerSales(itensSold);
+    expect(response).to.be.deep.equal({ status: 'CREATED', data: [mockInsertNewSale] });
+    expect(models.findProductById.calledOnce).to.be.equal(true);
+  });
+
+  it('registerSales deve retornar um erro em caso de dados incorretos', async function () {
+    sinon.stub(models, 'findProductById').resolves([]);
+
+    const itensSold = [{ productId: 999, quantity: 1 }];
+    const response = await services.registerSales(itensSold);
+    expect(response).to.be.deep.equal({ status: 'NOT_FOUND', data: { message: 'Product not found' } });
+  });
+
+  it('registerSales deve retornar um erro em caso de erro no banco de dados', async function () {
+    sinon.stub(models, 'findProductById').resolves([{ productId: 1, name: 'teste' }]);
+    sinon.stub(models, 'insertNewSale').resolves({ message: 'ERROR' });
+
+    const itensSold = [{ productId: 1, quantity: 1 }];
+    const response = await services.registerSales(itensSold);
+    expect(response).to.be.deep.equal({ status: 'ERROR', data: { message: 'ERROR' } });
   });
 });

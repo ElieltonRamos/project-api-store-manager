@@ -37,12 +37,13 @@ const createNewSale = async () => {
 const insertNewSale = async (data) => {
   const placeholders = data.map((_) => '(?, ?, ?)').join(', ');
   const idSale = await createNewSale();
+  if (!idSale) return { message: 'error' };
   const values = data.map(({ productId, quantity }) => [idSale, productId, quantity]).flat();
   const responseDB = await connection.execute(
     `INSERT INTO sales_products (sale_id, product_id, quantity) VALUES ${placeholders};`,
     [...values],
   );
-  if (responseDB.affectedRows === 0) return { message: 'error' };
+  if (responseDB[0].affectedRows === 0) return { message: 'error' };
   return { id: idSale, itemsSold: data };
 };
 

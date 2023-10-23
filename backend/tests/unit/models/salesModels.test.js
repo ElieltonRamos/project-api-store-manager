@@ -4,7 +4,7 @@ const models = require('../../../src/models');
 const connection = require('../../../src/models/connection');
 const { mockDBSales } = require('../../mocks/mockDataBase');
 
-describe('Testes unitarios - Models - Listagem de vendas', function () {
+describe('Testes unitarios - Models - Vendas', function () {
   afterEach(function () {
     sinon.restore();
   });
@@ -30,5 +30,61 @@ describe('Testes unitarios - Models - Listagem de vendas', function () {
 
     const response = await models.findSalesById(1);
     expect(response).to.be.equal(SalesById);
+  });
+
+  it('Verifica se a funcao createNewSale cria uma nova venda no Database', async function () {
+    const responseSQL = { insertId: 1 };
+    const mockDB = [responseSQL];
+
+    sinon.stub(connection, 'execute').resolves(mockDB);
+
+    const response = await models.createNewSale();
+    expect(response).to.be.equal(1);
+  });
+
+  it('Verifica se a funcao insertNewSale insere uma nova venda no Database', async function () {
+    const mockIDDatabase = [{ insertId: 1 }];
+    const insertSale = [{ productId: 1, quantity: 1 }];
+    const mockDBInsert = [{ affectedRows: 1 }];
+
+    sinon.stub(connection, 'execute')
+      .onFirstCall().resolves(mockIDDatabase)
+      .onSecondCall()
+      .resolves(mockDBInsert);
+
+    const response = await models.insertNewSale(insertSale);
+
+    expect(response.id).to.be.equal(1);
+    expect(response).to.be.deep.equal({ id: mockIDDatabase[0].insertId, itemsSold: insertSale });
+  });
+
+  it('Verifica se a funcao insertNewSale retorna um erro caso nao receba o ID', async function () {
+    const mockIDDatabase = [{ insertId: null }];
+    const insertSale = [{ productId: 1, quantity: 1 }];
+    const mockDBInsert = [{ affectedRows: 1 }];
+
+    sinon.stub(connection, 'execute')
+      .onFirstCall().resolves(mockIDDatabase)
+      .onSecondCall()
+      .resolves(mockDBInsert);
+
+    const response = await models.insertNewSale(insertSale);
+
+    expect(response).to.be.deep.equal({ message: 'error' });
+  });
+
+  it('Verifica se a funcao insertNewSale retorna um erro caso a venda nao seja cadastrada', async function () {
+    const mockIDDatabase = [{ insertId: 10 }];
+    const insertSale = [{ productId: 1, quantity: 1 }];
+    const mockDBInsert = [{ affectedRows: 0 }];
+
+    sinon.stub(connection, 'execute')
+      .onFirstCall().resolves(mockIDDatabase)
+      .onSecondCall()
+      .resolves(mockDBInsert);
+
+    const response = await models.insertNewSale(insertSale);
+
+    expect(response).to.be.deep.equal({ message: 'error' });
   });
 });

@@ -3,7 +3,7 @@ const listProductId = require('./listProductId');
 const { listAllSales } = require('./listAllSales');
 const { listSalesFromId } = require('./listSalesFromId');
 const { registerProduct } = require('./registerProduct');
-const { registerSales } = require('./registerSales');
+const { registerSales, productExists, validationItensSolds } = require('./registerSales');
 
 module.exports = {
   listAllProducts,
@@ -12,4 +12,6 @@ module.exports = {
   listSalesFromId,
   registerProduct,
   registerSales,
+  productExists,
+  validationItensSolds,
 };

@@ -34,10 +34,11 @@ const registerSales = async (itensSold) => {
   }
   const responseDB = await models.insertNewSale(itensSold);
   const status = responseDB.message ? 'ERROR' : 'CREATED';
-  const data = responseDB.message ? responseDB : responseDB;
-  return { status, data };
+  return { status, data: responseDB };
 };
 
 module.exports = {
   registerSales,
+  productExists,
+  validationItensSolds,
 };

@@ -8,7 +8,7 @@ const services = require('../../../src/services');
 const controllers = require('../../../src/controllers');
 const { mockDBSales } = require('../../mocks/mockDataBase');
 
-describe('Testes unitários - Controller - Listagem de vendas', function () {
+describe('Testes unitários - Controller - Vendas', function () {
   afterEach(function () {
     sinon.restore();
   });
@@ -71,5 +71,39 @@ describe('Testes unitários - Controller - Listagem de vendas', function () {
     await controllers.getSalesFromId(req, res);
     expect(res.status).to.have.been.calledWith(404);
     expect(res.json).to.have.been.calledWith({ message: 'Sales not found' });
+  });
+
+  it('postSales deve cadastrar uma venda com sucesso', async function () {
+    const saleInfo = { productId: 1, quantity: 1 };
+    const newSale = { id: 1, itemsSold: [saleInfo] };
+    const mockResponse = { status: 'OK', data: newSale };
+    sinon.stub(services, 'registerSales').resolves(mockResponse);
+
+    const req = [saleInfo];
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub().returnsThis(),
+    };
+
+    await controllers.postSales(req, res);
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(newSale);
+  });
+
+  it('postSales deve retornar um erro em caso de dados incorretos', async function () {
+    const saleInfo = { productId: 9999, quantity: 1 };
+    const data = { message: 'Product not found' };
+    const mockResponse = { status: 'NOT_FOUND', data };
+    sinon.stub(services, 'registerSales').resolves(mockResponse);
+
+    const req = [saleInfo];
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub().returnsThis(),
+    };
+
+    await controllers.postSales(req, res);
+    expect(res.status).to.have.been.calledWith(404);
+    expect(res.json).to.have.been.calledWith(data);
   });
 });

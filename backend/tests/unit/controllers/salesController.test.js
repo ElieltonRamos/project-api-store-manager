@@ -106,4 +106,19 @@ describe('Testes unitários - Controller - Vendas', function () {
     expect(res.status).to.have.been.calledWith(404);
     expect(res.json).to.have.been.calledWith(data);
   });
+
+  it('deleteSale deve deletar uma venda com sucesso', async function () {
+    const mockResponse = { status: 'NO_CONTENT', data: { message: 'Deleted sale successfully' } };
+    sinon.stub(services, 'deleteSale').resolves(mockResponse);
+
+    const req = { params: { id: 1 } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub().returnsThis(),
+    };
+
+    await controllers.deleteSale(req, res);
+    expect(res.status).to.have.been.calledWith(204);
+    expect(res.json).to.have.been.calledWith({ message: 'Deleted sale successfully' });
+  });
 });

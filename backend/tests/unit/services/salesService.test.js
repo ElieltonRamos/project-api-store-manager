@@ -118,4 +118,28 @@ describe('Testes unitários - Services - Vendas', function () {
     const response = await services.registerSales(itensSold);
     expect(response).to.be.deep.equal({ status: 'ERROR', data: { message: 'ERROR' } });
   });
+
+  it('deleteSale deve retornar um objeto com status OK e os dados da venda deletada em caso de sucesso', async function () {
+    sinon.stub(models, 'deleteSale').resolves({ affectedRows: 1 });
+    sinon.stub(models, 'findSalesById').resolves([mockDBSales[0]]);
+
+    const response = await services.deleteSale(1);
+    expect(response).to.be.deep.equal({ status: 'NO_CONTENT', data: { message: 'Sale deleted successfully' } });
+  });
+
+  it('deleteSale deve retornar um objeto com status NOT_FOUND e uma mensagem de erro caso a venda nao exista', async function () {
+    sinon.stub(models, 'deleteSale').resolves({ affectedRows: 0 });
+    sinon.stub(models, 'findSalesById').resolves([]);
+
+    const response = await services.deleteSale(999);
+    expect(response).to.be.deep.equal({ status: 'NOT_FOUND', data: { message: 'Sale not found' } });
+  });
+
+  it('deleteSale deve retornar um objeto com status ERROR e uma mensagem de erro caso ocorra um erro no banco de dados', async function () {
+    sinon.stub(models, 'deleteSale').resolves({ affectedRows: 0 });
+    sinon.stub(models, 'findSalesById').resolves([mockDBSales[0]]);
+
+    const response = await services.deleteSale(1);
+    expect(response).to.be.deep.equal({ status: 'ERROR', data: { message: 'database error' } });
+  });
 });

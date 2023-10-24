@@ -87,4 +87,14 @@ describe('Testes unitarios - Models - Vendas', function () {
 
     expect(response).to.be.deep.equal({ message: 'error' });
   });
+
+  it('Verifica se a funcao deleteSale deleta uma venda do Database', async function () {
+    const mockDB = [{ affectedRows: 1 }];
+
+    sinon.stub(connection, 'execute').resolves(mockDB);
+
+    const response = await models.deleteSale(1);
+
+    expect(response).to.be.deep.equal(1);
+  });
 });

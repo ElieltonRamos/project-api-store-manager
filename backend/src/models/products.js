@@ -34,10 +34,18 @@ const updateProduct = async (id, name) => {
   return responseDB[0].affectedRows;
 };
 
+const seachProductByName = async (queryParams) => {
+  const [searchDataBase] = await connection.execute(`
+  SELECT * FROM products WHERE name LIKE ?
+  `, [`%${queryParams}%`]);
+  return searchDataBase;
+};
+
 module.exports = {
   findAllProducts,
   findProductById,
   insertNewProduct,
   deleteProduct,
   updateProduct,
+  seachProductByName,
 };

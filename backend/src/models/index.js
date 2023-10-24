@@ -1,5 +1,5 @@
 const { findAllProducts, findProductById, insertNewProduct,
-  deleteProduct, updateProduct } = require('./products');
+  deleteProduct, updateProduct, seachProductByName } = require('./products');
 const { findAllSales, findSalesById, insertNewSale, createNewSale,
   deleteSale, updateSale } = require('./sales');
 
@@ -15,4 +15,5 @@ module.exports = {
   updateProduct,
   deleteSale,
   updateSale,
+  seachProductByName,
 };

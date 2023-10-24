@@ -8,6 +8,7 @@ const { deleteProduct } = require('./deleteProduct');
 const { updateProduct } = require('./updateProduct');
 const { deleteSale } = require('./deleteSale');
 const { updateSale } = require('./updateSale');
+const { searchProduct } = require('./searchProduct');
 
 module.exports = {
   listAllProducts,
@@ -22,4 +23,5 @@ module.exports = {
   updateProduct,
   deleteSale,
   updateSale,
+  searchProduct,
 };

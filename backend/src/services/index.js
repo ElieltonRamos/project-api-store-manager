@@ -5,6 +5,7 @@ const { listSalesFromId } = require('./listSalesFromId');
 const { registerProduct } = require('./registerProduct');
 const { registerSales, productExists, validationItensSolds } = require('./registerSales');
 const { deleteProduct } = require('./deleteProduct');
+const { updateProduct } = require('./updateProduct');
 
 module.exports = {
   listAllProducts,
@@ -16,4 +17,5 @@ module.exports = {
   productExists,
   validationItensSolds,
   deleteProduct,
+  updateProduct,
 };

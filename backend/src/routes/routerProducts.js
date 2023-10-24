@@ -12,4 +12,6 @@ routerProducts.post('/', middlewares.validateRegistrationField, controllers.post
 
 routerProducts.delete('/:id', controllers.deleteProduct);
 
+routerProducts.put('/:id', middlewares.validateRegistrationField, controllers.putProduct);
+
 module.exports = routerProducts;

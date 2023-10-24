@@ -5,6 +5,7 @@ const { getSalesFromId } = require('./getSalesFromId');
 const { postProducts } = require('./postProducts');
 const { postSales } = require('./postSales');
 const { deleteProduct } = require('./deleteProduct');
+const { putProduct } = require('./putProduct');
 
 module.exports = {
   getAllProducts,
@@ -14,4 +15,5 @@ module.exports = {
   postProducts,
   postSales,
   deleteProduct,
+  putProduct,
 };

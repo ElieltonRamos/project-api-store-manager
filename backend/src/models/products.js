@@ -26,9 +26,18 @@ const deleteProduct = async (id) => {
   return responseDB[0].affectedRows;
 };
 
+const updateProduct = async (id, name) => {
+  const responseDB = await connection.execute(
+    'UPDATE products SET name = ? WHERE id = ?',
+    [name, id],
+  );
+  return responseDB[0].affectedRows;
+};
+
 module.exports = {
   findAllProducts,
   findProductById,
   insertNewProduct,
   deleteProduct,
+  updateProduct,
 };

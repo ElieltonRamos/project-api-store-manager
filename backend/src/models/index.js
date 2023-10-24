@@ -1,6 +1,7 @@
 const { findAllProducts, findProductById, insertNewProduct,
   deleteProduct, updateProduct } = require('./products');
-const { findAllSales, findSalesById, insertNewSale, createNewSale } = require('./sales');
+const { findAllSales, findSalesById, insertNewSale, createNewSale,
+  deleteSale } = require('./sales');
 
 module.exports = {
   findAllProducts,
@@ -12,4 +13,5 @@ module.exports = {
   createNewSale,
   deleteProduct,
   updateProduct,
+  deleteSale,
 };

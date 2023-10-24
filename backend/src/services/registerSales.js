@@ -8,7 +8,7 @@ const productExists = async (productId) => {
 
 const validationItensSolds = async (itensSold) => {
   const isValid = await Promise.all(
-    itensSold.map(async ({ productId, quantity }) => {
+    itensSold.map(({ productId, quantity }) => {
       if (productId === undefined) {
         return { status: 'BAD_REQUEST', data: { message: '"productId" is required' } };
       }

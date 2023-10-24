@@ -147,4 +147,19 @@ describe('Testes unitários - Controller - Products', function () {
     expect(res.status).to.have.been.calledWith(204);
     expect(res.json).to.have.been.calledWith('product deleted success');
   });
+
+  it('searchProduct deve retornar um produto e o status da requisição em caso de sucesso', async function () {
+    const mockResponse = { status: 'OK', data: mockDBProducts };
+    sinon.stub(services, 'searchProduct').resolves(mockResponse);
+
+    const req = { query: { q: '' } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub().returnsThis(),
+    };
+
+    await controllers.searchProduct(req, res);
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(mockDBProducts);
+  });
 });

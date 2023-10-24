@@ -58,4 +58,14 @@ describe('Testes unitários - Models - Produtos', function () {
     const response = await models.deleteProduct(1);
     expect(response).to.be.equal(1);
   });
+
+  it('searchProductByName deve retornar um array de produtos', async function () {
+    const mockDB = [[mockDBProducts[0]], []];
+
+    sinon.stub(connection, 'execute').resolves(mockDB);
+
+    const response = await models.seachProductByName('martelo');
+    expect(response).to.be.an('array');
+    expect(response).to.be.deep.equal([mockDBProducts[0]]);
+  });
 });

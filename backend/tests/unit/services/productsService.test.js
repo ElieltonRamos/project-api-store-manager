@@ -128,4 +128,13 @@ describe('Testes unitários - Services - Produtos', function () {
     expect(data).to.be.deep.equal({ message: 'Product not found' });
     expect(status).to.be.equal('NOT_FOUND');
   });
+
+  it('searchProduct deve retornar um array de produtos e o status da requisição em caso de sucesso', async function () {
+    sinon.stub(models, 'seachProductByName').resolves(mockDBProducts);
+
+    const { status, data } = await services.searchProduct('');
+    expect(data).to.be.an('array');
+    expect(data).to.be.deep.equal(mockDBProducts);
+    expect(status).to.be.equal('OK');
+  });
 });

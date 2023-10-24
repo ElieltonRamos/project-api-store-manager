@@ -40,4 +40,22 @@ describe('Testes unitários - Models - Produtos', function () {
     const response = await models.insertNewProduct('produto teste');
     expect(response).to.be.equal(1);
   });
+
+  it('Verifica se a funcao updateProduct atualiza um produto no Database', async function () {
+    const mockDB = [{ affectedRows: 1 }];
+
+    sinon.stub(connection, 'execute').resolves(mockDB);
+
+    const response = await models.updateProduct(1, 'produto teste');
+    expect(response).to.be.equal(1);
+  });
+
+  it('Verifica se a funcao deleteProduct deleta um produto no Database', async function () {
+    const mockDB = [{ affectedRows: 1 }];
+
+    sinon.stub(connection, 'execute').resolves(mockDB);
+
+    const response = await models.deleteProduct(1);
+    expect(response).to.be.equal(1);
+  });
 });

@@ -117,4 +117,34 @@ describe('Testes unitários - Controller - Products', function () {
     expect(res.status).to.have.been.calledWith(500);
     expect(res.json).to.have.been.calledWith({ message: 'Internal Error' });
   });
+
+  it('putProduct deve retornar um produto e o status da requisição em caso de sucesso', async function () {
+    const mockResponse = { status: 'OK', data: mockDBProducts[0] };
+    sinon.stub(services, 'updateProduct').resolves(mockResponse);
+
+    const req = { body: { name: 'teste' }, params: { id: 1 } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub().returnsThis(),
+    };
+
+    await controllers.putProduct(req, res);
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(mockDBProducts[0]);
+  });
+
+  it('deleteProduct deve retornar um produto e o status da requisição em caso de sucesso', async function () {
+    const mockResponse = { status: 'NO_CONTENT', data: 'product deleted success' };
+    sinon.stub(services, 'deleteProduct').resolves(mockResponse);
+
+    const req = { params: { id: 1 } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub().returnsThis(),
+    };
+
+    await controllers.deleteProduct(req, res);
+    expect(res.status).to.have.been.calledWith(204);
+    expect(res.json).to.have.been.calledWith('product deleted success');
+  });
 });

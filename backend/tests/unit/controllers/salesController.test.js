@@ -121,4 +121,25 @@ describe('Testes unitários - Controller - Vendas', function () {
     expect(res.status).to.have.been.calledWith(204);
     expect(res.json).to.have.been.calledWith({ message: 'Deleted sale successfully' });
   });
+
+  it('putSale deve atualizar uma venda com sucesso', async function () {
+    const saleInfo = {
+      date: '2023-05-06T03:14:28.000Z',
+      productId: 2,
+      quantity: 3,
+      saleId: 1,
+    };
+    const mockResponse = { status: 'OK', data: saleInfo };
+    sinon.stub(services, 'updateSale').resolves(mockResponse);
+
+    const req = { params: { saleId: 1, productId: 2 }, body: { quantity: 3 } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub().returnsThis(),
+    };
+
+    await controllers.putSale(req, res);
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(saleInfo);
+  });
 });

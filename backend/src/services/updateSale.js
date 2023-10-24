@@ -1,12 +1,12 @@
 const models = require('../models');
-const { validationItensSolds } = require('./registerSales');
+const registerSales = require('./registerSales');
 
-const updatedSale = async (saleId, productId, quantity) => {
-  const [isValid] = await validationItensSolds([{ productId, quantity }]);
+const updateSale = async (saleId, productId, quantity) => {
+  const [isValid] = await registerSales.validationItensSolds([{ productId, quantity }]);
 
   if (isValid.status !== 'OK') {
-    const message = isValid.data.message === 'Product not found'
-      ? 'Product not found in sale' : isValid.data.message;
+    const message = isValid.data.message === 'Product not found' ? 'Product not found in sale'
+      : isValid.data.message;
     return { status: isValid.status, data: { message } };
   }
 
@@ -22,5 +22,5 @@ const updatedSale = async (saleId, productId, quantity) => {
 };
 
 module.exports = {
-  updatedSale,
+  updateSale,
 };

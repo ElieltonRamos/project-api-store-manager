@@ -97,4 +97,14 @@ describe('Testes unitarios - Models - Vendas', function () {
 
     expect(response).to.be.deep.equal(1);
   });
+
+  it('updateSale deve atualizar uma venda com sucesso', async function () {
+    const mockDB = [{ affectedRows: 1 }];
+
+    sinon.stub(connection, 'execute').resolves(mockDB);
+
+    const response = await models.updateSale(1);
+
+    expect(response).to.be.deep.equal(1);
+  });
 });

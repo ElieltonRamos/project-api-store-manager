@@ -1,6 +1,6 @@
 services:
   backend:
-    build: backend
+    build: .
     container_name: store_manager
     ports:
       - 3001:3001 # porta padrão da aplicação
@@ -8,8 +8,8 @@ services:
     command: run dev # roda aplicação com nodemon
     volumes:
       # vincula pasta local com a dentro do container
-      - ./backend/src:/app/src
-      - ./backend/tests:/app/tests
+      - ./src:/app/src
+      - ./tests:/app/tests
     environment:
       MYSQL_USER: root
       MYSQL_PASSWORD: password

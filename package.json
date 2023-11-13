@@ -1,6 +1,6 @@
 {
-  "name": "store-manager-backend",
-  "version": "0.1.0",
+  "name": "api-store-manager",
+  "version": "2.0.0",
   "description": "Store Manager API",
   "main": "src/server.js",
   "engines": {
@@ -10,10 +10,10 @@
   "scripts": {
     "start": "node .",
     "dev": "nodemon --inspect=0.0.0.0:9229 .",
-    "test:mocha": "mocha",
-    "test:coverage": "nyc mocha",
+    "test": "mocha tests/unit/**/*.test.js",
+    "test:coverage": "nyc mocha tests/unit/**/*.test.js",
     "test:mutation": "stryker run",
-    "lint": "eslint --no-error-on-unmatched-pattern ."
+    "lint": "npx eslint --config .eslintrc.json ."
   },
   "dependencies": {
     "@hapi/boom": "9.1.0",

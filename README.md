@@ -108,6 +108,11 @@ npm test
 
 Verifique a saida dos testes no seu terminal
 
+O projeto apresenta uma cobertura de testes de 100% das funções criadas, para verificar isso, você pode executar o seguinte comando:
+   ``` bash
+npm run test:coverage
+   ```
+
 ## Uso
 
 Explore as rotas essenciais desta API, operações de CRUD e funcionalidades de pesquisa para uma administração eficaz de vendas e produtos.

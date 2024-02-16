@@ -12,7 +12,6 @@
     "dev": "nodemon --inspect=0.0.0.0:9229 .",
     "test": "mocha tests/unit/**/*.test.js",
     "test:coverage": "nyc mocha tests/unit/**/*.test.js",
-    "test:mutation": "stryker run",
     "lint": "npx eslint --config .eslintrc.json ."
   },
   "dependencies": {
@@ -24,8 +23,6 @@
   },
   "devDependencies": {
     "eslint-config-trybe-backend": "2.1.0",
-    "@stryker-mutator/core": "6.4.2",
-    "@stryker-mutator/mocha-runner": "6.4.2",
     "chai": "4.3.4",
     "chai-http": "4.3.0",
     "mocha": "10.2.0",

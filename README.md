@@ -45,12 +45,15 @@ O arquivo docker-compose.yml define a configuração dos contêineres necessári
 Para desenvolver e executar esta aplicação, é necessário configurar um ambiente com as seguintes ferramentas:
 
 **Docker**: Utilizamos o Docker para empacotar e isolar a aplicação em contêineres, garantindo uma implantação consistente e fácil gerenciamento de dependências.
+
 - [Como instalar o docker](https://docs.docker.com/engine/install/ubuntu/)
 
 **Node.js**: A aplicação é desenvolvida em Node.js, uma plataforma de tempo de execução JavaScript, e é necessária para executar o código.
+
 - [Como instalar o Node.js](https://nodejs.org/en/download/package-manager)
 
 **Docker Compose**: O Docker Compose é uma ferramenta que simplifica a definição e o gerenciamento de serviços multi-contêiner em um único arquivo, ideal para orquestrar contêineres relacionados à aplicação.
+
 - [Como instalar o Docker-Compose](https://docs.docker.com/compose/install/)
 
 Certifique-se de instalar e configurar essas ferramentas em seu ambiente de desenvolvimento antes de iniciar o projeto.
@@ -83,26 +86,21 @@ docker compose -up -d
 
 Inicie a aplicação:
 
+  O container do node ja esta configurado para deixar a apricação online automaticamente, caso queira ver os logs da apricação, execute o seguinte comando
+
    ``` bash
-docker exec -it talker_manager bash
-npm start
+docker logs -f store_manager
    ```
 
 ## Testes
 
-O projeto conta com testes que verificam o funcionamento de cada rota da API, os testes foram escritos com JEST, lembrando que e necessario que o docker compose tenha sido executado para que os containers da apricação estejam online para que os testes funcionem.
+O projeto conta com testes que verificam o funcionamento de cada rota da API, os testes foram escritos com a biblioteca MOCHA, nao e necessario que o docker compose tenha sido executado para que os testes funcionem, cada teste esta isolado com stubs(mocks).
 
 Para executar os testes siga os seguintes passos:
 
 Abra o terminal na raiz do projeto
 
 Execute o comando:
-
-   ``` bash
-docker exec -it talker_manager bash
-   ```
-
-Agora, dentro do container do node, execute:
 
    ``` bash
 npm test
@@ -114,63 +112,107 @@ Verifique a saida dos testes no seu terminal
 
 Explore as rotas essenciais desta API, incluindo autenticação, operações de CRUD e funcionalidades de pesquisa para uma administração eficaz dos palestrantes.
 
-1. **GET /talker**
-   - Retornar lista de palestrantes.
-   - Se não houver palestrantes, retornar array vazio.
+1. **Listar Produtos**
 
-2. **GET /talker/:id**
-   - Retornar palestrante com base no ID.
-   - Retornar 404 se o palestrante não existir.
+Endpoint: GET /products e GET /products/:id
+Descrição:
+GET /products retorna todos os produtos ordenados por ID crescente.
+GET /products/:id retorna apenas o produto com o ID especificado.
+Testes: Deve ser testada a funcionalidade de listagem de todos os produtos e de um produto específico.
 
-3. **POST /login**
-   - Retornar token aleatório de 16 caracteres.
-   
-4. **Validações para /login**
-   - Validar campos e retornar 400 com mensagem de erro, em caso de dados inválidos.
+2. **Listar Vendas**
 
-5. **POST /talker**
-   - Criar novo palestrante.
+Endpoint: GET /sales e GET /sales/:id
+Descrição:
+GET /sales retorna todas as vendas ordenadas por saleId e productId.
+GET /sales/:id retorna apenas a venda com o ID especificado.
+Testes: Devem garantir que as vendas sejam listadas corretamente e que a ordem de classificação seja conforme especificado.
 
-6. **PUT /talker/:id**
-   - Atualizar informações de um palestrante.
+3. **Cadastrar Produtos**
 
-7. **DELETE /talker/:id**
-   - Excluir um palestrante.
+Endpoint: POST /products
+Descrição:
+Cria um novo produto no banco de dados com base nos dados fornecidos no corpo da requisição.
+Testes: Devem validar se o produto é criado corretamente no banco de dados.
 
-8. **GET /talker/search?q=searchTerm**
-   - Implementar pesquisa com base em um termo de consulta.
+4. **Validações para o Cadastro de Produtos**
 
-9. **GET /talker/search?rate=rateNumber**
-   - Implementar pesquisa por classificação.
+Descrição:
+Deve retornar mensagens de erro para requisições com dados inválidos.
+Testes: Devem garantir que as validações ocorram corretamente.
 
-10. **GET /talker/search?date=watchedDate**
-    - Implementar pesquisa por data de visualização.
+5. **Cadastrar Vendas**
 
-11. **PATCH /talker/rate/:id**
-    - Atualizar a classificação de um palestrante.
+Endpoint: POST /sales
+Descrição:
+Cria uma nova venda no banco de dados com base nos dados fornecidos no corpo da requisição.
+Testes: Devem validar se a venda é criada corretamente no banco de dados.
 
-12. **GET /talker/db**
-    - Utilizar um banco de dados MySQL para listar palestrantes.
+6. **Validações para o Cadastro de Vendas**
+
+Descrição:
+Deve retornar mensagens de erro para requisições com dados inválidos.
+Testes: Devem garantir que as validações ocorram corretamente.
+
+7. **Atualizar um Produto**
+
+Endpoint: PUT /products/:id
+Descrição:
+Atualiza as informações de um produto com o ID especificado no banco de dados.
+Testes: Devem garantir que as informações do produto sejam atualizadas corretamente.
+
+8. **Deletar um Produto**
+
+Endpoint: DELETE /products/:id
+Descrição:
+Remove um produto com o ID especificado do banco de dados.
+Testes: Devem garantir que o produto seja removido corretamente do banco de dados.
+
+9. **Deletar uma Venda**
+
+Endpoint: DELETE /sales/:id
+Descrição:
+Remove uma venda com o ID especificado do banco de dados.
+
+10. **Atualizar a Quantidade de um Produto em uma Venda**
+
+Endpoint: /sales/:saleId/products/:productId/quantity
+Descrição:
+Atualiza a quantidade de um produto vendido na venda especificada.
+
+11. **Pesquisar Produtos**
+
+Endpoint: GET /products/search
+Descrição:
+Retorna todos os produtos no banco de dados que contenham o termo especificado em seus nomes.
+Testes: Devem garantir que a pesquisa funcione corretamente, incluindo casos em que nenhum produto seja encontrado.
 
 ## Estrutura do Projeto
 
 A seguir esta explicada a estrutura de pastas do projeto
 
-project-api-talker-manager/ : A pasta raiz do projeto.<br>
+project-api-store-manager/ : A pasta raiz do projeto.<br>
 ├── node_modules/ : Contém as dependências da aplicação.<br>
 ├── tests/ : Contém os testes do projeto.<br>
-├── src/ : O diretório principal do código-fonte da aplicação, onde estão localizados os middlewares, modelos de dados e definições das rotas da API.<br>
+├── src/ : O diretório principal do código-fonte da aplicação, onde estão localizados todas as camadas da apricação e o arquivo do servidor<br>
 │   ├── middlewares/<br>
 │   ├── models/<br>
 │   ├── routes/<br>
-├── index.js : O arquivo principal que inicia o servidor e configura as rotas da API.<br>
-├── talker.json : Pode conter dados iniciais ou de exemplo para palestrantes.<br>
+│   ├── services/<br>
+│   ├── controllers/<br>
+│   ├── utils/<br>
+│   ├── app.js: Arquivo que configura o express/<br>
+│   ├── server.js: Arquivo que inicia o express/<br>
 ├── package.json : Descreve as dependências e configurações do projeto.<br>
 ├── README.md : A documentação do projeto.<br>
 ├── docker-compose.yml : Utilizado para configurar e executar a aplicação em contêineres Docker.<br>
 ├── DockerFile : Contém instruções para a criação de uma imagem Docker para a aplicação.<br>
-├── Jest.config.js : Configurações para testes com o framework Jest.<br>
-├── seed.sql : Um arquivo SQL usado para preencher o banco de dados com dados iniciais.<br>
+├── sql : Um arquivo SQL usado para preencher o banco de dados com dados iniciais.<br>
+├── images-readme : Pasta contendo imagens do readme.<br>
+├── .mocharc.json : Configurações para testes com o framework mocha.<br>
+├── .dockerignore : Configuração para que o docker ignore alguns arquivos.<br>
+├── .gitignore : Configuração para que o git(Git Hub) ignore alguns arquivos.<br>
+├── .eslintrc.json : Configuração do linter, biblioteca para manter padrão de codico.<br>
 
 ## Contato
 
@@ -181,7 +223,7 @@ Elielton Ramos
 
 ## Contribuição
 
-Este projeto foi desenvolvido durante meu curso na [Trybe](https://www.betrybe.com/) com base no projeto 'Talker Manager'. A Trybe é uma escola de programação que tem compromisso com o sucesso profissional. O projeto 'Talker Manager' é parte do módulo de Back-End e envolve a criação de uma API com Express, Node, Docker e MySQL.
+Este projeto foi desenvolvido durante meu curso na [Trybe](https://www.betrybe.com/) com base no projeto 'Store Manager'. A Trybe é uma escola de programação que tem compromisso com o sucesso profissional. O projeto 'Store Manager' é parte do módulo de Back-End e envolve a criação de uma API com Express, Node, Docker e MySQL.
 
 ## Licença
 

@@ -81,7 +81,7 @@ npm install
 Inicie o docker compose:
 
    ``` bash
-docker compose -up -d
+docker compose up -d --build
    ```
 
 Inicie a aplicação:
@@ -110,7 +110,7 @@ Verifique a saida dos testes no seu terminal
 
 ## Uso
 
-Explore as rotas essenciais desta API, incluindo autenticação, operações de CRUD e funcionalidades de pesquisa para uma administração eficaz dos palestrantes.
+Explore as rotas essenciais desta API, operações de CRUD e funcionalidades de pesquisa para uma administração eficaz de vendas e produtos.
 
 1. **Listar Produtos**
 
